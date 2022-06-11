@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:saver/pages/home/home_page.dart';
-import 'package:saver/pages/login/login_page.dart';
-import 'package:saver/pages/plan/plan_page.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
+import 'package:saver/dependency_injections/injection.dart';
+import 'package:saver/models/storage/login_user.dart';
+import 'package:saver/routes/routes.dart';
 import 'package:saver/theme/light_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  configureDependencies();
+  await _initializeDB();
+
   runApp(const MyApp());
+}
+
+Future<void> _initializeDB() async {
+  final appDocumentDirectory =
+      await pathProvider.getApplicationDocumentsDirectory();
+
+  Hive.init(appDocumentDirectory.path);
+  Hive.registerAdapter(LoginUserAdapter());
 }
 
 class MyApp extends StatelessWidget {
@@ -20,11 +35,7 @@ class MyApp extends StatelessWidget {
       theme: lightTheme(context),
       themeMode: ThemeMode.light,
       // home: const MyHomePage(title: 'Saver App'),
-      routes: {
-        'login': (BuildContext context) => const LoginPage(),
-        'home': (BuildContext context) => const HomePage(),
-        'plan': (BuildContext context) => PlanPage(),
-      },
+      routes: getApplicationRoutes(),
       initialRoute: 'login',
     );
   }

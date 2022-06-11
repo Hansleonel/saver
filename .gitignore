@@ -8,7 +8,8 @@
 .buildlog/
 .history
 .svn/
-
+lib/dependency_injections/injection.config.dart
+*.g.dart
 # IntelliJ related
 *.iml
 *.ipr
@@ -30,6 +31,7 @@
 .pub-cache/
 .pub/
 /build/
+pubspec.lock
 
 # Web related
 lib/generated_plugin_registrant.dart
@@ -44,3 +46,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# IOS will place build artifacts here
+ios/build/
+/ios/build/
+ios/build/XCBuildData/
+/ios/build/XCBuildData/

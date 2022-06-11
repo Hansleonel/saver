@@ -85,18 +85,15 @@ class BankPage extends StatelessWidget {
                   ),
                   color: whiteColor,
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(defaultPadding),
                     child: Row(
                       children: [
                         SizedBox(
                           height: 48,
                           width: 48,
-                          child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(32)),
-                            child: Container(
-                              color: whileColor80,
-                            ),
+                          child: SvgPicture.asset(
+                            "assets/icons/AirpodMax.svg",
+                            height: 16,
                           ),
                         ),
                         const SizedBox(width: 8.0),
@@ -106,7 +103,7 @@ class BankPage extends StatelessWidget {
                             Row(
                               children: [
                                 Text(
-                                  'Money Completed',
+                                  'Airpod Completed',
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                                 const SizedBox(width: 96.0),
@@ -116,7 +113,7 @@ class BankPage extends StatelessWidget {
                                 )
                               ],
                             ),
-                            const SizedBox(height: 16.0),
+                            const SizedBox(height: defaultPadding),
                             Stack(
                               children: [
                                 SizedBox(
@@ -143,7 +140,7 @@ class BankPage extends StatelessWidget {
                                 )
                               ],
                             ),
-                            const SizedBox(height: 16.0),
+                            const SizedBox(height: defaultPadding),
                             Row(
                               children: [
                                 Text(
@@ -163,22 +160,22 @@ class BankPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16.0),
+                const SizedBox(height: defaultPadding),
                 Text(
                   "My Record",
                   style: Theme.of(context).textTheme.headline6,
                 ),
-                const SizedBox(height: 16.0),
+                const SizedBox(height: defaultPadding),
                 Text(
                   "Suggestions",
                   style: Theme.of(context).textTheme.headline6,
                 ),
-                const SizedBox(height: 16.0),
+                const SizedBox(height: defaultPadding),
                 Text(
                   "Suggestions",
                   style: Theme.of(context).textTheme.headline6,
                 ),
-                const SizedBox(height: 16.0),
+                const SizedBox(height: defaultPadding),
                 Text(
                   "Suggestions",
                   style: Theme.of(context).textTheme.headline6,

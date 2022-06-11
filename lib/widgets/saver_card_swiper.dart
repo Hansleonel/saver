@@ -15,7 +15,7 @@ class SaverCardSwiper extends StatelessWidget {
   Widget build(BuildContext context) {
     final _screenSize = MediaQuery.of(context).size;
     return Container(
-      padding: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.only(top: defaultPadding),
       child: Column(
         children: [
           Swiper(
@@ -37,7 +37,7 @@ class SaverCardSwiper extends StatelessWidget {
                   ),
                   color: creditCardList[index].getColor(),
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(defaultPadding),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -60,7 +60,7 @@ class SaverCardSwiper extends StatelessWidget {
                               .headline6!
                               .copyWith(color: whiteColor),
                         ),
-                        const SizedBox(height: 16.0),
+                        const SizedBox(height: defaultPadding),
                         Row(
                           children: [
                             Text(
@@ -74,7 +74,7 @@ class SaverCardSwiper extends StatelessWidget {
                             )
                           ],
                         ),
-                        const SizedBox(height: 16.0)
+                        const SizedBox(height: defaultPadding)
                       ],
                     ),
                   ),

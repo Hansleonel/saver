@@ -26,7 +26,7 @@ class PlanPage extends StatelessWidget {
                   "Choose your goal",
                   style: Theme.of(context).textTheme.headline6,
                 ),
-                const SizedBox(height: 16.0),
+                const SizedBox(height: defaultPadding),
                 StreamBuilder<int>(
                     stream: planBloc.itemSelected,
                     builder: (context, snapshot) {

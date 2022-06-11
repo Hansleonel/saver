@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:saver/blocs/login_bloc.dart';
+import 'package:saver/blocs/provider/provider.dart';
 import 'package:saver/constants.dart';
+import 'package:saver/dependency_injections/injection.dart';
 import 'package:saver/widgets/saver_input_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,7 +15,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController userTxtEditCntrl = TextEditingController();
   TextEditingController passwordTxtEditCntrl = TextEditingController();
-  final loginBloc = LoginBloc();
+
+  final LoginBloc? loginBloc =
+      Provider.of<LoginBloc>(() => getIt.get<LoginBloc>());
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,10 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SAVER'),
+        title: Text(
+          'Saver',
+          style: Theme.of(context).textTheme.headline6,
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -64,10 +70,10 @@ class _LoginPageState extends State<LoginPage> {
               ),
               StreamBuilder<bool>(
                   //initialData: true,
-                  stream: loginBloc.loginStream,
+                  stream: loginBloc!.loginStream,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      if (snapshot.data!) {
+                      if (snapshot.data! && !loginBloc!.loginError) {
                         print('4 ahora si navegar');
                         Future.delayed(const Duration(milliseconds: 200), () {
                           Navigator.pushReplacementNamed(context, 'home');
@@ -76,18 +82,33 @@ class _LoginPageState extends State<LoginPage> {
                         // Navigator.pushNamedAndRemoveUntil(
                         //     context, 'home', ModalRoute.withName('login'));
                       }
-                      return ElevatedButton(
-                          onPressed: null,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text('CARGANDO'),
-                              SizedBox(
-                                width: 8.0,
-                              ),
-                              CircularProgressIndicator.adaptive()
-                            ],
-                          ));
+                      return Column(
+                        children: [
+                          loginBloc!.loginError
+                              ? const Text(
+                                  'Error with the login please try again',
+                                  style: TextStyle(color: errorColor))
+                              : const SizedBox(),
+                          const SizedBox(height: defaultPadding),
+                          ElevatedButton(
+                              onPressed: loginBloc!.loginError ? login : null,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(loginBloc!.loginError
+                                      ? 'LOGIN'
+                                      : 'LOADING'),
+                                  const SizedBox(
+                                    width: 8.0,
+                                  ),
+                                  loginBloc!.loginError
+                                      ? const SizedBox.shrink()
+                                      : const CircularProgressIndicator
+                                          .adaptive()
+                                ],
+                              )),
+                        ],
+                      );
                     }
                     return ElevatedButton(
                         onPressed: () {
@@ -102,7 +123,9 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const Text("Don't have an account?"),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'register');
+                    },
                     child: const Text('Sign Up'),
                   )
                 ],
@@ -118,13 +141,13 @@ class _LoginPageState extends State<LoginPage> {
     print('1 ingresa');
     if (userTxtEditCntrl.text.isNotEmpty &&
         passwordTxtEditCntrl.text.isNotEmpty) {
-      loginBloc.login(userTxtEditCntrl.text, passwordTxtEditCntrl.text);
+      loginBloc!.login(userTxtEditCntrl.text, passwordTxtEditCntrl.text);
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    loginBloc.disposeStream();
+    loginBloc!.disposeStream();
   }
 }
