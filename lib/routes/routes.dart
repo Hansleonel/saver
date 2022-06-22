@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:saver/pages/home/home_page.dart';
 import 'package:saver/pages/login/login_page.dart';
-import 'package:saver/pages/plan/plan_page.dart';
+import 'package:saver/pages/onboarding/onboarding_page.dart';
+import 'package:saver/pages/plan/plan_page_first.dart';
+import 'package:saver/pages/plan/plan_page_second.dart';
 import 'package:saver/pages/register/register_page.dart';
 
 Map<String, WidgetBuilder> getApplicationRoutes() {
   return <String, WidgetBuilder>{
-    'login': (BuildContext context) => const LoginPage(),
-    'home': (BuildContext context) => const HomePage(),
-    'plan': (BuildContext context) => PlanPage(),
-    'register': (BuildContext context) => RegisterPage(),
+    HomePage.route: (BuildContext context) => const HomePage(),
+    LoginPage.route: (BuildContext context) => const LoginPage(),
+    OnBoardingPage.route: (BuildContext context) => OnBoardingPage(),
+    PlanPageFirst.route: (BuildContext context) => PlanPageFirst(),
+    PlanPageSecond.route: (BuildContext context) => PlanPageSecond(),
+    RegisterPage.route: (BuildContext context) => RegisterPage(),
   };
 }

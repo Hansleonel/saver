@@ -71,7 +71,7 @@ class BankPage extends StatelessWidget {
                           ],
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, 'plan');
+                          Navigator.pushNamed(context, 'onboarding');
                         },
                       ),
                     ),

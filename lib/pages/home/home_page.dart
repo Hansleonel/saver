@@ -7,6 +7,7 @@ import 'package:saver/pages/bank/bank_page.dart';
 import 'package:saver/pages/suggestions/suggestions_pagge.dart';
 
 class HomePage extends StatefulWidget {
+  static const route = 'home';
   const HomePage({Key? key}) : super(key: key);
 
   @override

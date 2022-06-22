@@ -6,6 +6,7 @@ import 'package:saver/dependency_injections/injection.dart';
 import 'package:saver/widgets/saver_input_field.dart';
 
 class LoginPage extends StatefulWidget {
+  static const route = 'login';
   const LoginPage({Key? key}) : super(key: key);
 
   @override
@@ -46,8 +47,8 @@ class _LoginPageState extends State<LoginPage> {
                 textEditingController: userTxtEditCntrl,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
-                errorText: "Enter a valid email address",
-                hintText: "Email address",
+                errorText: "Enter your user name",
+                hintText: "User Name",
                 prefixIcon: "assets/icons/Message.svg",
               ),
               const SizedBox(height: defaultPadding),

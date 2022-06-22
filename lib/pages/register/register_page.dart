@@ -7,6 +7,7 @@ import 'package:saver/models/storage/login_user.dart';
 import 'package:saver/widgets/widgets.dart';
 
 class RegisterPage extends StatelessWidget {
+  static const route = 'register';
   RegisterPage({Key? key}) : super(key: key);
 
   final TextEditingController userNameTxtEditCntrl = TextEditingController();

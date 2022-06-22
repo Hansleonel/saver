@@ -46,6 +46,7 @@ class SaverItemPlan extends StatelessWidget {
           ),
         ),
         onTap: () {
+          // TODO REFACTOR USE VALIDATIONS WITH ID
           if (nameItem == "Airpod") {
             planBloc.setItemSelected = 1;
           } else if (nameItem == "AirpodMax") {
