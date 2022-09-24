@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:saver/blocs/plan_bloc.dart';
 import 'package:saver/constants.dart';
+import 'package:saver/pages/plan/plan_page_first_calculate.dart';
 import 'package:saver/pages/plan/plan_page_second.dart';
 
 class PlanPageFirst extends StatelessWidget {
@@ -56,7 +57,8 @@ class PlanPageFirst extends StatelessWidget {
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText2!
-                                .copyWith(color: blackColor)),
+                                .copyWith(
+                                    color: primaryMaterialColor.shade900)),
                       )
                     ],
                   ),
@@ -110,7 +112,9 @@ class PlanPageFirst extends StatelessWidget {
             onPressed: () {
               if (planBloc.planSelected.hasValue &&
                   planBloc.planSelected.value >= 1) {
-                Navigator.pushNamed(context, PlanPageSecond.route);
+                planBloc.planSelected.value == 1
+                    ? Navigator.pushNamed(context, PlanPageFirstCalculate.route)
+                    : Navigator.pushNamed(context, PlanPageSecond.route);
               } else {
                 planBloc.setErrorPlanSelected = true;
               }

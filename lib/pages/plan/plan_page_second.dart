@@ -41,18 +41,21 @@ class PlanPageSecond extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SaverItemPlan(
+                                  idItem: 1,
                                   iconItem: "Airpod",
                                   nameItem: 'Airpod',
                                   planBloc: planBloc,
                                   isSelectedItem: (snapshot.data == 1),
                                 ),
                                 SaverItemPlan(
+                                  idItem: 2,
                                   iconItem: "AirpodMax",
                                   nameItem: 'AirpodMax',
                                   planBloc: planBloc,
                                   isSelectedItem: (snapshot.data == 2),
                                 ),
                                 SaverItemPlan(
+                                  idItem: 3,
                                   iconItem: "Iwatch",
                                   nameItem: 'Iphone',
                                   planBloc: planBloc,
@@ -64,18 +67,21 @@ class PlanPageSecond extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SaverItemPlan(
+                                  idItem: 4,
                                   iconItem: "Android",
                                   nameItem: 'Android',
                                   planBloc: planBloc,
                                   isSelectedItem: (snapshot.data == 4),
                                 ),
                                 SaverItemPlan(
+                                  idItem: 5,
                                   iconItem: "Drone",
                                   nameItem: 'Drone',
                                   planBloc: planBloc,
                                   isSelectedItem: (snapshot.data == 5),
                                 ),
                                 SaverItemPlan(
+                                  idItem: 6,
                                   iconItem: "Macbook",
                                   nameItem: 'Ipad',
                                   planBloc: planBloc,
@@ -92,16 +98,19 @@ class PlanPageSecond extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SaverItemPlan(
+                                idItem: 1,
                                 iconItem: "Airpod",
                                 nameItem: 'Airpod',
                                 planBloc: planBloc,
                               ),
                               SaverItemPlan(
+                                idItem: 2,
                                 iconItem: "AirpodMax",
                                 nameItem: 'AirpodMax',
                                 planBloc: planBloc,
                               ),
                               SaverItemPlan(
+                                idItem: 3,
                                 iconItem: "Iwatch",
                                 nameItem: 'Iphone',
                                 planBloc: planBloc,
@@ -112,16 +121,19 @@ class PlanPageSecond extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SaverItemPlan(
+                                idItem: 4,
                                 iconItem: "Android",
                                 nameItem: 'Android',
                                 planBloc: planBloc,
                               ),
                               SaverItemPlan(
+                                idItem: 5,
                                 iconItem: "Drone",
                                 nameItem: 'Drone',
                                 planBloc: planBloc,
                               ),
                               SaverItemPlan(
+                                idItem: 6,
                                 iconItem: "Macbook",
                                 nameItem: 'Ipad',
                                 planBloc: planBloc,

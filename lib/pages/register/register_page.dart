@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:saver/blocs/plan_bloc.dart';
 import 'package:saver/blocs/provider/provider.dart';
 import 'package:saver/blocs/register_bloc.dart';
 import 'package:saver/constants.dart';
 import 'package:saver/dependency_injections/injection.dart';
 import 'package:saver/models/storage/login_user.dart';
+import 'package:saver/pages/login/login_page.dart';
 import 'package:saver/widgets/widgets.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -16,6 +18,7 @@ class RegisterPage extends StatelessWidget {
   final TextEditingController rePasswordTxtEditCntrl = TextEditingController();
   final RegisterBloc? registerBloc =
       Provider.of<RegisterBloc>(() => getIt.get<RegisterBloc>());
+  final PlanBloc? planBloc = Provider.of<PlanBloc>(() => getIt.get<PlanBloc>());
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +86,8 @@ class RegisterPage extends StatelessWidget {
                       if (snapshot.data!) {
                         // NAVIGATION
                         Future.delayed(const Duration(milliseconds: 200), () {
-                          Navigator.pop(context);
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, LoginPage.route, (route) => false);
                         });
                       }
                       return ElevatedButton(
@@ -125,6 +129,8 @@ class RegisterPage extends StatelessWidget {
             userMailTxtEditCntrl.text, passwordTxtEditCntrl.text, true);
         registerBloc!.save(loginUser);
       }
+    } else {
+      print('your need complete the data');
     }
     //registerBloc!.getLoginUser('user');
   }

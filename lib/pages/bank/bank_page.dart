@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:saver/blocs/bank_bloc.dart';
 import 'package:saver/constants.dart';
 import 'package:saver/models/credit_card.dart';
+import 'package:saver/pages/onboarding/onboarding_page.dart';
 import 'package:saver/widgets/saver_card_swiper.dart';
 
 class BankPage extends StatelessWidget {
@@ -71,7 +72,11 @@ class BankPage extends StatelessWidget {
                           ],
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, 'onboarding');
+                          Navigator.pushNamed(context, OnBoardingPage.route);
+                          // if we need delete all the scope of the previus pages in the widget three
+                          // we can use the following lines, additionally the predicate must be false
+                          // Navigator.pushNamedAndRemoveUntil(
+                          //     context, OnBoardingPage.route, (route) => false);
                         },
                       ),
                     ),

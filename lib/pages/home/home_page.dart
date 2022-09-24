@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:saver/blocs/home_bloc.dart';
 import 'package:saver/constants.dart';
 import 'package:saver/pages/bank/bank_page.dart';
+import 'package:saver/pages/calendar/calendar_plan_page.dart';
 import 'package:saver/pages/suggestions/suggestions_pagge.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,7 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List _pagesHome = [
     const BankPage(),
-    SugggestionsPage(),
+    const CalendarPlanPage(),
     SugggestionsPage()
   ];
   final homeBloc = HomeBloc();

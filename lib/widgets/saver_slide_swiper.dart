@@ -20,7 +20,7 @@ class SaverSlideSwiper extends StatelessWidget {
       constraints: BoxConstraints.tight(const Size(300, 350)),
       child: Swiper(
         autoplay: true,
-        autoplayDelay: 6000,
+        autoplayDelay: 3000,
         index: 1,
         outer: false,
         itemBuilder: (BuildContext context, int index) {

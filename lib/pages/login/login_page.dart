@@ -3,6 +3,8 @@ import 'package:saver/blocs/login_bloc.dart';
 import 'package:saver/blocs/provider/provider.dart';
 import 'package:saver/constants.dart';
 import 'package:saver/dependency_injections/injection.dart';
+import 'package:saver/pages/home/home_page.dart';
+import 'package:saver/pages/register/register_page.dart';
 import 'package:saver/widgets/saver_input_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -17,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController userTxtEditCntrl = TextEditingController();
   TextEditingController passwordTxtEditCntrl = TextEditingController();
 
+  // TODO we need to use the dependecy injection when the bloc uses multiple usecases
   final LoginBloc? loginBloc =
       Provider.of<LoginBloc>(() => getIt.get<LoginBloc>());
 
@@ -77,9 +80,9 @@ class _LoginPageState extends State<LoginPage> {
                       if (snapshot.data! && !loginBloc!.loginError) {
                         print('4 ahora si navegar');
                         Future.delayed(const Duration(milliseconds: 200), () {
-                          Navigator.pushReplacementNamed(context, 'home');
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, HomePage.route, (route) => false);
                         });
-                        //Navigator.pushReplacementNamed(context, 'home');
                         // Navigator.pushNamedAndRemoveUntil(
                         //     context, 'home', ModalRoute.withName('login'));
                       }
@@ -125,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                   const Text("Don't have an account?"),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, 'register');
+                      Navigator.pushNamed(context, RegisterPage.route);
                     },
                     child: const Text('Sign Up'),
                   )
@@ -149,6 +152,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     super.dispose();
-    loginBloc!.disposeStream();
+    // loginBloc!.disposeStream();
   }
 }

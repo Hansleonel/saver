@@ -4,12 +4,14 @@ import 'package:saver/blocs/plan_bloc.dart';
 import 'package:saver/constants.dart';
 
 class SaverItemPlan extends StatelessWidget {
+  final int idItem;
   final String iconItem;
   final String nameItem;
   final bool? isSelectedItem;
   final PlanBloc planBloc;
   const SaverItemPlan(
       {Key? key,
+      required this.idItem,
       required this.iconItem,
       required this.nameItem,
       required this.planBloc,
@@ -46,18 +48,17 @@ class SaverItemPlan extends StatelessWidget {
           ),
         ),
         onTap: () {
-          // TODO REFACTOR USE VALIDATIONS WITH ID
-          if (nameItem == "Airpod") {
+          if (idItem == 1) {
             planBloc.setItemSelected = 1;
-          } else if (nameItem == "AirpodMax") {
+          } else if (idItem == 2) {
             planBloc.setItemSelected = 2;
-          } else if (nameItem == "Iphone") {
+          } else if (idItem == 3) {
             planBloc.setItemSelected = 3;
-          } else if (nameItem == "Android") {
+          } else if (idItem == 4) {
             planBloc.setItemSelected = 4;
-          } else if (nameItem == "Drone") {
+          } else if (idItem == 5) {
             planBloc.setItemSelected = 5;
-          } else if (nameItem == "Ipad") {
+          } else if (idItem == 6) {
             planBloc.setItemSelected = 6;
           }
         });
