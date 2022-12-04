@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:saver/blocs/plan_bloc.dart';
 import 'package:saver/blocs/provider/provider.dart';
 import 'package:saver/blocs/register_bloc.dart';
 import 'package:saver/constants.dart';
 import 'package:saver/dependency_injections/injection.dart';
 import 'package:saver/models/storage/login_user.dart';
+import 'package:saver/models/storage/plan_user.dart';
 import 'package:saver/pages/login/login_page.dart';
 import 'package:saver/widgets/widgets.dart';
 
@@ -22,6 +24,7 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(planBloc!.dayToSave);
     final Size _size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -60,21 +63,108 @@ class RegisterPage extends StatelessWidget {
                 prefixIcon: "assets/icons/Message.svg",
               ),
               const SizedBox(height: defaultPadding),
-              SaverInputField(
-                textEditingController: passwordTxtEditCntrl,
-                obscureText: true,
-                textInputAction: TextInputAction.next,
-                hintText: "Password",
-                prefixIcon: "assets/icons/Lock.svg",
-              ),
+              StreamBuilder<bool>(
+                  stream: registerBloc!.isIconActivePassword,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return SaverInputField(
+                        textEditingController: passwordTxtEditCntrl,
+                        obscureText: !snapshot.data!,
+                        textInputAction: TextInputAction.next,
+                        hintText: "Password",
+                        prefixIcon: "assets/icons/Lock.svg",
+                        suffixIcon: InkWell(
+                          child: SvgPicture.asset(
+                            "assets/icons/FaceId.svg",
+                            height: 24,
+                            width: 24,
+                            color: snapshot.data!
+                                ? primaryColor
+                                : Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color!
+                                    .withOpacity(0.3),
+                          ),
+                          onTap: () {
+                            registerBloc!.setIsIconActivePassword =
+                                !snapshot.data!;
+                          },
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  }),
               const SizedBox(height: defaultPadding),
-              SaverInputField(
-                textEditingController: rePasswordTxtEditCntrl,
-                obscureText: true,
-                textInputAction: TextInputAction.next,
-                hintText: "Repeat Password",
-                prefixIcon: "assets/icons/Lock.svg",
-              ),
+              StreamBuilder<bool>(
+                  stream: registerBloc!.isIconActiveRepeatPassword,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return SaverInputField(
+                        textEditingController: rePasswordTxtEditCntrl,
+                        obscureText: !snapshot.data!,
+                        textInputAction: TextInputAction.next,
+                        hintText: "Repeat Password",
+                        prefixIcon: "assets/icons/Lock.svg",
+                        suffixIcon: InkWell(
+                          child: SvgPicture.asset(
+                            "assets/icons/FaceId.svg",
+                            height: 24,
+                            width: 24,
+                            color: snapshot.data!
+                                ? primaryColor
+                                : Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color!
+                                    .withOpacity(0.3),
+                          ),
+                          onTap: () {
+                            registerBloc!.setIsIconActiveRepeatPassword =
+                                !snapshot.data!;
+                          },
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  }),
+              const SizedBox(height: defaultPadding),
+              StreamBuilder<bool>(
+                  stream: registerBloc!.hasValidUserName,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (!snapshot.data!) {
+                        return const SaverErrorText(
+                            errorText:
+                                'Your user name is not valid, please change the user name');
+                      }
+                    }
+                    return const SizedBox();
+                  }),
+              StreamBuilder<bool>(
+                  stream: registerBloc!.hasCompleteData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (!snapshot.data!) {
+                        return const SaverErrorText(
+                            errorText:
+                                'You need to complete the data for your register');
+                      }
+                    }
+                    return const SizedBox();
+                  }),
+              StreamBuilder<bool>(
+                  stream: registerBloc!.hasTheSamePassword,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (!snapshot.data!) {
+                        return const SaverErrorText(
+                            errorText:
+                                'You need to have the same password and repeat password');
+                      }
+                    }
+                    return const SizedBox();
+                  }),
               SizedBox(
                 height:
                     _size.height > 700 ? _size.height * 0.1 : defaultPadding,
@@ -83,12 +173,20 @@ class RegisterPage extends StatelessWidget {
                   stream: registerBloc!.registerStream,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      if (snapshot.data!) {
+                      if (snapshot.data! &&
+                          registerBloc!.hasValidUserName.value) {
                         // NAVIGATION
                         Future.delayed(const Duration(milliseconds: 200), () {
                           Navigator.pushNamedAndRemoveUntil(
                               context, LoginPage.route, (route) => false);
                         });
+                      } else if (snapshot.data! &&
+                          !registerBloc!.hasValidUserName.value) {
+                        return ElevatedButton(
+                            onPressed: () {
+                              register();
+                            },
+                            child: const Text('REGISTER'));
                       }
                       return ElevatedButton(
                           onPressed: null,
@@ -118,20 +216,40 @@ class RegisterPage extends StatelessWidget {
 
   void register() {
     print('1 ingresa');
-    if (userNameTxtEditCntrl.text.isNotEmpty &&
-        userMailTxtEditCntrl.text.isNotEmpty &&
-        passwordTxtEditCntrl.text.isNotEmpty &&
-        rePasswordTxtEditCntrl.text.isNotEmpty) {
-      if (passwordTxtEditCntrl.text != rePasswordTxtEditCntrl.text) {
-        print('password needs to be the same with repeat password');
-      } else if (passwordTxtEditCntrl.text == rePasswordTxtEditCntrl.text) {
+    if (hasAllDataComplete()) {
+      if (!hasSamePasswordAndRepeatPassword()) {
+        registerBloc!.setHasSamePassword = false;
+        registerBloc!.setHasCompleteData = true;
+      } else if (hasSamePasswordAndRepeatPassword()) {
+        registerBloc!.setHasSamePassword = true;
+        // using the UI to create a new instance of LoginUser
         LoginUser loginUser = LoginUser(userNameTxtEditCntrl.text,
             userMailTxtEditCntrl.text, passwordTxtEditCntrl.text, true);
-        registerBloc!.save(loginUser);
+        // using the bloc "planBloc" to create a new instance of PlanUser
+        PlanUser planUser =
+            PlanUser(loginUser.user, planBloc!.dayToSave, planBloc!.mountSaved);
+        // save the data of the user
+        registerBloc!.saveUserData(loginUser, planUser);
       }
     } else {
-      print('your need complete the data');
+      if (hasSamePasswordAndRepeatPassword()) {
+        registerBloc!.setHasSamePassword = true;
+      } else {
+        registerBloc!.setHasSamePassword = false;
+      }
+      registerBloc!.setHasCompleteData = false;
     }
     //registerBloc!.getLoginUser('user');
+  }
+
+  bool hasAllDataComplete() {
+    return userNameTxtEditCntrl.text.isNotEmpty &&
+        userMailTxtEditCntrl.text.isNotEmpty &&
+        passwordTxtEditCntrl.text.isNotEmpty &&
+        rePasswordTxtEditCntrl.text.isNotEmpty;
+  }
+
+  bool hasSamePasswordAndRepeatPassword() {
+    return passwordTxtEditCntrl.text == rePasswordTxtEditCntrl.text;
   }
 }

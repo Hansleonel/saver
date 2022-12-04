@@ -8,6 +8,7 @@ const String LOGIN_BOX = "loginBox";
 mixin LoginDB {
   Future saveUser(LoginUser loginUser);
   Future<LoginUser?> getLoginUser(String user);
+  Future<List<LoginUser>> getAllUsers();
 }
 
 @Injectable(as: LoginDB)
@@ -40,5 +41,18 @@ class LoginDBAdapter implements LoginDB {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  Future<List<LoginUser>> getAllUsers() async {
+    List<LoginUser> userList = [];
+    try {
+      final box = await _openBox(LOGIN_BOX);
+      userList = box.values.toList().cast<LoginUser>();
+    } catch (e) {
+      print(e.toString());
+      rethrow;
+    }
+    return userList;
   }
 }

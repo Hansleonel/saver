@@ -3,9 +3,11 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'package:saver/dependency_injections/injection.dart';
 import 'package:saver/models/storage/login_user.dart';
+import 'package:saver/models/storage/plan_user.dart';
 import 'package:saver/pages/onboarding/onboarding_page.dart';
 import 'package:saver/routes/routes.dart';
 import 'package:saver/theme/light_theme.dart';
+import 'package:saver/usecases/plan_use_case.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +24,7 @@ Future<void> _initializeDB() async {
 
   Hive.init(appDocumentDirectory.path);
   Hive.registerAdapter(LoginUserAdapter());
+  Hive.registerAdapter(PlanUserAdapter());
 }
 
 class MyApp extends StatelessWidget {

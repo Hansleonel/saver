@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:saver/blocs/provider/bloc.dart';
 import 'package:saver/models/storage/login_user.dart';
 import 'package:saver/usecases/login_use_case.dart';
@@ -10,12 +11,17 @@ class LoginBloc extends Bloc {
   final LoginUseCase _loginUseCase;
 
   final _loginStreamController = StreamController<bool>.broadcast();
+
+  final _isIconActiveSubject = BehaviorSubject<bool>.seeded(false);
   bool _loginError = false;
 
   LoginBloc(this._loginUseCase);
 
   Function(bool) get loginSink => _loginStreamController.sink.add;
   Stream<bool> get loginStream => _loginStreamController.stream;
+
+  ValueStream<bool> get isIconActive => _isIconActiveSubject.stream;
+  set setIsIconActive(bool value) => _isIconActiveSubject.value = value;
 
   bool get loginError => _loginError;
   set setLoginerror(value) => _loginError = value;

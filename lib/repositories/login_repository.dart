@@ -5,6 +5,7 @@ import 'package:saver/services/database/login_db.dart';
 mixin LoginRepository {
   Future save(LoginUser loginUser);
   Future<LoginUser?> getLoginUser(String user);
+  Future<List<LoginUser>> getAllUsers();
 }
 
 @Injectable(as: LoginRepository)
@@ -21,5 +22,10 @@ class LoginRepositoryAdapter implements LoginRepository {
   @override
   Future<LoginUser?> getLoginUser(String user) {
     return loginDB.getLoginUser(user);
+  }
+
+  @override
+  Future<List<LoginUser>> getAllUsers() {
+    return loginDB.getAllUsers();
   }
 }

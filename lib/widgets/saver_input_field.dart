@@ -7,6 +7,7 @@ class SaverInputField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final String? hintText;
   final String? prefixIcon;
+  final Widget? suffixIcon;
   final TextInputType? keyboardType;
   final int? maxLength;
   final bool obscureText;
@@ -18,6 +19,7 @@ class SaverInputField extends StatelessWidget {
     this.textInputAction,
     this.hintText,
     this.prefixIcon,
+    this.suffixIcon,
     this.keyboardType,
     this.maxLength,
     this.obscureText = false,
@@ -27,27 +29,27 @@ class SaverInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        controller: textEditingController,
-        textInputAction: textInputAction,
-        maxLength: maxLength,
-        autofocus: false,
-        keyboardType: keyboardType,
-        obscureText: obscureText,
-        onFieldSubmitted: (value) {},
-        onChanged: (value) {
-          // TODO refactor this valdition to get a new keybordType
-          if (textEditingController != null &&
-              textEditingController!.text.startsWith('0') &&
-              keyboardType == TextInputType.number) {
-            textEditingController!.text = '';
-          }
-        },
-        validator: (value) {
-          if (value == null) return 'this field is required';
-          return value.length < 3 ? errorText : null;
-        },
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        decoration: InputDecoration(
+      controller: textEditingController,
+      textInputAction: textInputAction,
+      maxLength: maxLength,
+      autofocus: false,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      onFieldSubmitted: (value) {},
+      onChanged: (value) {
+        // TODO refactor this valdition to get a new keybordType
+        if (textEditingController != null &&
+            textEditingController!.text.startsWith('0') &&
+            keyboardType == TextInputType.number) {
+          textEditingController!.text = '';
+        }
+      },
+      validator: (value) {
+        if (value == null) return 'this field is required';
+        return value.length < 3 ? errorText : null;
+      },
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      decoration: InputDecoration(
           hintText: hintText,
           counterText: '',
           prefixIcon: prefixIcon != null
@@ -64,6 +66,16 @@ class SaverInputField extends StatelessWidget {
                           .withOpacity(0.3)),
                 )
               : null,
-        ));
+          suffixIcon: suffixIcon != null
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: defaultPadding * 0.75),
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: defaultPadding * 0.75),
+                      child: suffixIcon),
+                )
+              : null),
+    );
   }
 }

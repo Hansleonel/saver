@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:saver/blocs/login_bloc.dart';
 import 'package:saver/blocs/provider/provider.dart';
 import 'package:saver/constants.dart';
@@ -55,12 +56,37 @@ class _LoginPageState extends State<LoginPage> {
                 prefixIcon: "assets/icons/Message.svg",
               ),
               const SizedBox(height: defaultPadding),
-              SaverInputField(
-                textEditingController: passwordTxtEditCntrl,
-                obscureText: true,
-                textInputAction: TextInputAction.next,
-                hintText: "Password",
-                prefixIcon: "assets/icons/Lock.svg",
+              StreamBuilder<bool>(
+                stream: loginBloc!.isIconActive,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return SaverInputField(
+                      textEditingController: passwordTxtEditCntrl,
+                      obscureText: !snapshot.data!,
+                      textInputAction: TextInputAction.next,
+                      hintText: "Password",
+                      prefixIcon: "assets/icons/Lock.svg",
+                      suffixIcon: InkWell(
+                        child: SvgPicture.asset(
+                          "assets/icons/FaceId.svg",
+                          height: 24,
+                          width: 24,
+                          color: snapshot.data!
+                              ? primaryColor
+                              : Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color!
+                                  .withOpacity(0.3),
+                        ),
+                        onTap: () {
+                          loginBloc!.setIsIconActive = !snapshot.data!;
+                        },
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
               ),
               Align(
                 child: TextButton(
