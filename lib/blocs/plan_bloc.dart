@@ -66,6 +66,11 @@ class PlanBloc extends Bloc {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    _planSelectedSubject.close();
+    _itemSelectedPositionSubject.close();
+    _isEnableButton.close();
+    _errorPlanSelectedSubject.close();
+    _errorItemSelectedSubject.close();
+    _hasPlanCalculate.close();
   }
 }
