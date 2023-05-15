@@ -74,5 +74,10 @@ class RegisterBloc extends Bloc {
   @override
   void dispose() {
     _registerStreamController.close();
+    _hasValidUserNameController.close();
+    _hasCompleteDataController.close();
+    _hasTheSamePasswordController.close();
+    _isIconActivePasswordSubject.close();
+    _isIconActiveRepeatPasswordSubject.close();
   }
 }

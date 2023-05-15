@@ -76,5 +76,6 @@ class LoginBloc extends Bloc {
   @override
   void dispose() {
     _loginStreamController.close();
+    _isIconActiveSubject.close();
   }
 }
