@@ -6,6 +6,8 @@ mixin LoginUseCase {
   Future save(LoginUser loginUser);
   Future<LoginUser?> getLoginUser(String user);
   Future<bool> validationUserName(String userName);
+  Future<bool> saveLoginUserName(String userName);
+  Future<String> getLoginUserName();
 }
 
 @Injectable(as: LoginUseCase)
@@ -34,5 +36,15 @@ class LoginUseCaseAdapter implements LoginUseCase {
       }
     }
     return true;
+  }
+
+  @override
+  Future<bool> saveLoginUserName(String userName) {
+    return _loginRepository.saveLogingUserName(userName);
+  }
+
+  @override
+  Future<String> getLoginUserName() {
+    return _loginRepository.getLoginUserName();
   }
 }

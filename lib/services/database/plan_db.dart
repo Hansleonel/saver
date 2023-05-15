@@ -8,6 +8,7 @@ const String PLAN_BOX = "planBox";
 
 mixin PlanDB {
   Future savePlanUser(PlanUser planUser);
+  Future<PlanUser> getPlanUser(String user);
 }
 
 @Injectable(as: PlanDB)
@@ -29,6 +30,18 @@ class PlanDBAdapater implements PlanDB {
       await box.put(planUser.user, planUser);
     } catch (e) {
       log(e.toString(), name: 'SavePlanUser');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PlanUser> getPlanUser(String user) async {
+    try {
+      final box = await _openBox(PLAN_BOX);
+      PlanUser? result = await box.get(user);
+      return result ?? PlanUser('', 0, 0);
+    } catch (e) {
+      log(e.toString(), name: 'GetPlanUser');
       rethrow;
     }
   }

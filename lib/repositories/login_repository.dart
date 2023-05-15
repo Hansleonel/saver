@@ -6,6 +6,8 @@ mixin LoginRepository {
   Future save(LoginUser loginUser);
   Future<LoginUser?> getLoginUser(String user);
   Future<List<LoginUser>> getAllUsers();
+  Future<bool> saveLogingUserName(String userName);
+  Future<String> getLoginUserName();
 }
 
 @Injectable(as: LoginRepository)
@@ -27,5 +29,15 @@ class LoginRepositoryAdapter implements LoginRepository {
   @override
   Future<List<LoginUser>> getAllUsers() {
     return loginDB.getAllUsers();
+  }
+
+  @override
+  Future<bool> saveLogingUserName(String userName) {
+    return loginDB.saveLoginUserName(userName);
+  }
+
+  @override
+  Future<String> getLoginUserName() {
+    return loginDB.getLoginUserName();
   }
 }

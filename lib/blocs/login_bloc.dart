@@ -42,6 +42,8 @@ class LoginBloc extends Bloc {
     if (loginUser.password == password && loginUser.user != '') {
       print('3 bloc rellana con true luego de esperar');
       _loginError = false;
+      bool saved = await _loginUseCase.saveLoginUserName(loginUser.user!);
+      print('nombre guardado: $saved');
       loginSink(true);
       return true;
     }

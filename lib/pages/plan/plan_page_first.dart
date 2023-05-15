@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:saver/blocs/plan_bloc.dart';
+import 'package:saver/blocs/provider/provider.dart';
 import 'package:saver/constants.dart';
+import 'package:saver/dependency_injections/injection.dart';
 import 'package:saver/pages/plan/plan_page_first_calculate.dart';
 import 'package:saver/pages/plan/plan_page_second.dart';
 
 class PlanPageFirst extends StatelessWidget {
   static const route = 'planFirst';
   PlanPageFirst({Key? key}) : super(key: key);
-  final planBloc = PlanBloc();
+  final PlanBloc? planBloc = Provider.of<PlanBloc>(() => getIt.get<PlanBloc>());
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class PlanPageFirst extends StatelessWidget {
       ),
       body: SafeArea(
         child: StreamBuilder<int>(
-            stream: planBloc.planSelected,
+            stream: planBloc!.planSelected,
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data! > 0) {
                 return SingleChildScrollView(
@@ -35,14 +37,14 @@ class PlanPageFirst extends StatelessWidget {
                             idPlan: 1,
                             title: 'Amount of money',
                             icon: 'AirpodMax',
-                            bloc: planBloc,
+                            bloc: planBloc!,
                             isSelectedItem: (snapshot.data == 1),
                           ),
                           ItemFirstPagePlan(
                             idPlan: 2,
                             title: 'Gift or Device',
                             icon: 'Drone',
-                            bloc: planBloc,
+                            bloc: planBloc!,
                             isSelectedItem: (snapshot.data == 2),
                           ),
                         ],
@@ -74,19 +76,19 @@ class PlanPageFirst extends StatelessWidget {
                         idPlan: 1,
                         title: 'Amount of money',
                         icon: 'AirpodMax',
-                        bloc: planBloc,
+                        bloc: planBloc!,
                       ),
                       ItemFirstPagePlan(
                         idPlan: 2,
                         title: 'Gift or Device',
                         icon: 'Drone',
-                        bloc: planBloc,
+                        bloc: planBloc!,
                       ),
                     ],
                   ),
                   const SizedBox(height: 16.0),
                   StreamBuilder<bool>(
-                      stream: planBloc.errorPlanSelected,
+                      stream: planBloc!.errorPlanSelected,
                       builder: (context, snapshot) {
                         if (snapshot.hasData && snapshot.data!) {
                           return Text('Error, you need to select a plan',
@@ -110,13 +112,13 @@ class PlanPageFirst extends StatelessWidget {
             const EdgeInsets.only(top: 16, bottom: 24, right: 16, left: 16),
         child: ElevatedButton(
             onPressed: () {
-              if (planBloc.planSelected.hasValue &&
-                  planBloc.planSelected.value >= 1) {
-                planBloc.planSelected.value == 1
+              if (planBloc!.planSelected.hasValue &&
+                  planBloc!.planSelected.value >= 1) {
+                planBloc!.planSelected.value == 1
                     ? Navigator.pushNamed(context, PlanPageFirstCalculate.route)
                     : Navigator.pushNamed(context, PlanPageSecond.route);
               } else {
-                planBloc.setErrorPlanSelected = true;
+                planBloc!.setErrorPlanSelected = true;
               }
             },
             child: const Text('CONTINUE')),

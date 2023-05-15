@@ -3,17 +3,26 @@ import 'dart:math';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:saver/blocs/provider/bloc.dart';
+import 'package:saver/models/storage/plan_user.dart';
+import 'package:saver/usecases/login_use_case.dart';
+import 'package:saver/usecases/plan_use_case.dart';
 
 @injectable
 class PlanBloc extends Bloc {
+  final PlanUseCase _planUseCase;
+  final LoginUseCase _loginUseCase;
   final _planSelectedSubject = BehaviorSubject<int>();
   final _itemSelectedPositionSubject = BehaviorSubject<int>();
   final _errorPlanSelectedSubject = BehaviorSubject<bool>();
   final _errorItemSelectedSubject = BehaviorSubject<bool>();
   final _hasPlanCalculate = BehaviorSubject<bool>();
   final _isEnableButton = BehaviorSubject<bool>();
+  final _daysToSaveSubect = BehaviorSubject<int>();
+
   int _daysToSave = 0;
   int _mountSaved = 0;
+
+  PlanBloc(this._planUseCase, this._loginUseCase);
 
   ValueStream<int> get planSelected => _planSelectedSubject.stream;
   ValueStream<int> get itemSelected => _itemSelectedPositionSubject.stream;
@@ -21,6 +30,8 @@ class PlanBloc extends Bloc {
   ValueStream<bool> get errorItemSelected => _errorItemSelectedSubject.stream;
   ValueStream<bool> get hasPlanCalculate => _hasPlanCalculate.stream;
   ValueStream<bool> get isEnableButton => _isEnableButton.stream;
+  ValueStream<int> get getDayToSave => _daysToSaveSubect.stream;
+
   int get dayToSave => _daysToSave;
   int get mountSaved => _mountSaved;
 
@@ -62,6 +73,22 @@ class PlanBloc extends Bloc {
       _isEnableButton.value = false;
     }
     return maxDaysRounded;
+  }
+
+  Future<int> getPlanUser() async {
+    try {
+      String userName = await _loginUseCase.getLoginUserName();
+      print('el nombre del usuario es $userName');
+      PlanUser planUser = await _planUseCase.getPlanUser(userName);
+      if (planUser.dayToSave != null && planUser.dayToSave! > 0) {
+        _daysToSaveSubect.value = planUser.dayToSave!;
+        return planUser.dayToSave!;
+      }
+      _daysToSaveSubect.value = 0;
+      return 0;
+    } catch (e, s) {
+      return 0;
+    }
   }
 
   @override

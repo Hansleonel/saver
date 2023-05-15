@@ -1,14 +1,20 @@
+import 'dart:developer';
+
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:saver/models/storage/login_user.dart';
 
 const String LOGIN_BOX = "loginBox";
+const String USER_NAME_BOX = "userNameBox";
+const String LOGIN_USER_NAME_SAVED = "userNameKey";
 //const String
 
 mixin LoginDB {
   Future saveUser(LoginUser loginUser);
   Future<LoginUser?> getLoginUser(String user);
   Future<List<LoginUser>> getAllUsers();
+  Future<bool> saveLoginUserName(String userName);
+  Future<String> getLoginUserName();
 }
 
 @Injectable(as: LoginDB)
@@ -54,5 +60,30 @@ class LoginDBAdapter implements LoginDB {
       rethrow;
     }
     return userList;
+  }
+
+  @override
+  Future<bool> saveLoginUserName(String userName) async {
+    try {
+      final box = await _openBox(USER_NAME_BOX);
+
+      await box.put(LOGIN_USER_NAME_SAVED, userName);
+      return true;
+    } catch (e) {
+      log(e.toString(), name: 'SaveLoginUserName');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> getLoginUserName() async {
+    try {
+      final box = await _openBox(USER_NAME_BOX);
+      String? result = await box.get(LOGIN_USER_NAME_SAVED);
+      return result ?? '';
+    } catch (e) {
+      log(e.toString(), name: 'GetLoginUserName');
+      rethrow;
+    }
   }
 }

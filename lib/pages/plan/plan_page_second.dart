@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:saver/blocs/plan_bloc.dart';
+import 'package:saver/blocs/provider/provider.dart';
 import 'package:saver/constants.dart';
+import 'package:saver/dependency_injections/injection.dart';
 import 'package:saver/widgets/widgets.dart';
 
 class PlanPageSecond extends StatelessWidget {
@@ -8,7 +10,11 @@ class PlanPageSecond extends StatelessWidget {
   PlanPageSecond({Key? key}) : super(key: key);
   // you dont need inject the dependecy of the bloc planBloc becasuse within this bloc
   // we don't have a use case
-  final planBloc = PlanBloc();
+  // final planBloc = PlanBloc();
+
+  // if you need to use a use case within the bloc you need to inject the dependency
+  final PlanBloc? planBloc = Provider.of<PlanBloc>(() => getIt.get<PlanBloc>());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +37,7 @@ class PlanPageSecond extends StatelessWidget {
                 ),
                 const SizedBox(height: defaultPadding),
                 StreamBuilder<int>(
-                    stream: planBloc.itemSelected,
+                    stream: planBloc!.itemSelected,
                     builder: (context, snapshot) {
                       if (snapshot.hasData && snapshot.data! > 0) {
                         print('column 1');
@@ -44,21 +50,21 @@ class PlanPageSecond extends StatelessWidget {
                                   idItem: 1,
                                   iconItem: "Airpod",
                                   nameItem: 'Airpod',
-                                  planBloc: planBloc,
+                                  planBloc: planBloc!,
                                   isSelectedItem: (snapshot.data == 1),
                                 ),
                                 SaverItemPlan(
                                   idItem: 2,
                                   iconItem: "AirpodMax",
                                   nameItem: 'AirpodMax',
-                                  planBloc: planBloc,
+                                  planBloc: planBloc!,
                                   isSelectedItem: (snapshot.data == 2),
                                 ),
                                 SaverItemPlan(
                                   idItem: 3,
                                   iconItem: "Iwatch",
                                   nameItem: 'Iphone',
-                                  planBloc: planBloc,
+                                  planBloc: planBloc!,
                                   isSelectedItem: (snapshot.data == 3),
                                 )
                               ],
@@ -70,21 +76,21 @@ class PlanPageSecond extends StatelessWidget {
                                   idItem: 4,
                                   iconItem: "Android",
                                   nameItem: 'Android',
-                                  planBloc: planBloc,
+                                  planBloc: planBloc!,
                                   isSelectedItem: (snapshot.data == 4),
                                 ),
                                 SaverItemPlan(
                                   idItem: 5,
                                   iconItem: "Drone",
                                   nameItem: 'Drone',
-                                  planBloc: planBloc,
+                                  planBloc: planBloc!,
                                   isSelectedItem: (snapshot.data == 5),
                                 ),
                                 SaverItemPlan(
                                   idItem: 6,
                                   iconItem: "Macbook",
                                   nameItem: 'Ipad',
-                                  planBloc: planBloc,
+                                  planBloc: planBloc!,
                                   isSelectedItem: (snapshot.data == 6),
                                 )
                               ],
@@ -101,19 +107,19 @@ class PlanPageSecond extends StatelessWidget {
                                 idItem: 1,
                                 iconItem: "Airpod",
                                 nameItem: 'Airpod',
-                                planBloc: planBloc,
+                                planBloc: planBloc!,
                               ),
                               SaverItemPlan(
                                 idItem: 2,
                                 iconItem: "AirpodMax",
                                 nameItem: 'AirpodMax',
-                                planBloc: planBloc,
+                                planBloc: planBloc!,
                               ),
                               SaverItemPlan(
                                 idItem: 3,
                                 iconItem: "Iwatch",
                                 nameItem: 'Iphone',
-                                planBloc: planBloc,
+                                planBloc: planBloc!,
                               )
                             ],
                           ),
@@ -124,24 +130,24 @@ class PlanPageSecond extends StatelessWidget {
                                 idItem: 4,
                                 iconItem: "Android",
                                 nameItem: 'Android',
-                                planBloc: planBloc,
+                                planBloc: planBloc!,
                               ),
                               SaverItemPlan(
                                 idItem: 5,
                                 iconItem: "Drone",
                                 nameItem: 'Drone',
-                                planBloc: planBloc,
+                                planBloc: planBloc!,
                               ),
                               SaverItemPlan(
                                 idItem: 6,
                                 iconItem: "Macbook",
                                 nameItem: 'Ipad',
-                                planBloc: planBloc,
+                                planBloc: planBloc!,
                               )
                             ],
                           ),
                           StreamBuilder<bool>(
-                              stream: planBloc.errorItemSelected,
+                              stream: planBloc!.errorItemSelected,
                               builder: (context, snapshot) {
                                 if (snapshot.hasData && snapshot.data!) {
                                   return const Text(
@@ -164,12 +170,12 @@ class PlanPageSecond extends StatelessWidget {
             const EdgeInsets.only(top: 16, bottom: 24, right: 16, left: 16),
         child: ElevatedButton(
             onPressed: () {
-              if (planBloc.itemSelected.hasValue &&
-                  planBloc.itemSelected.value >= 1) {
+              if (planBloc!.itemSelected.hasValue &&
+                  planBloc!.itemSelected.value >= 1) {
                 print("Correct");
               } else {
                 print("need choose an option");
-                planBloc.setErrorItemSelected = true;
+                planBloc!.setErrorItemSelected = true;
               }
             },
             child: const Text('Continue')),
